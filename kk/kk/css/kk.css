@@ -1,0 +1,110 @@
+
+/******** UI 전반 스타일 ********/
+
+#gamecanvas {
+  border: 1px solid #000;
+  background-color: #eee;
+  float: left;
+}
+
+#sidebar {
+  float: left;
+  margin-left: 5px;
+}
+
+#charstats {
+  border: 1px solid #ddd;
+  width: 192px;
+  font-weight: bold;
+  font-size: 10pt;
+  color: #000;
+}
+
+#inventory {
+  border: 1px solid #ddd;
+  width: 192px;
+  max-height: 256px;
+}
+
+footer {
+  float: left;
+  clear: both;
+  font-size: 7pt;
+  margin-top: 50px;
+}
+
+/******** 상태창 ********/
+
+
+/******** 인벤토리 ********/
+
+.equipment-row {
+  border-width: 1px;
+  border-color: #999;
+  height: 64px;
+  line-height: 64px; /* 텍스트 수직 정렬 */
+  padding-left: 10px;
+}
+
+.equipment-row__text {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  font-weight: bold;
+}
+
+.inventory-cell {
+  float: left;
+  width: 62px; height: 62px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bbb #000 #000 #bbb;
+  background-color: #ffd;
+}
+
+.equipment-row .inventory-cell {
+  float: right;
+  margin-right: 5px;
+}
+
+.inventory-cell__item-image {
+  position: relative;
+  width: 48px; height: 48px;
+  top: 7px; left: 7px;
+  cursor: pointer;
+}
+
+.item-tooltip__title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.tooltip-buttonset {
+  margin-top: 10px;
+}
+.tooltip-buttonset button {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+
+/******** 게임 로그 ********/
+
+#gamelog {
+  width: 640px;
+  height: 200px;
+  float: left;
+  clear: left;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+  background-color: #ddd;
+  overflow: auto;
+  font-size: 9pt;
+}
+
+.gamelog__entry,
+.gamelog__entry--normal   { color: black; }
+.gamelog__entry--info     { color: blue;   }
+.gamelog__entry--warning  { color: orange; }
+.gamelog__entry--critical { color: red;    }
+.gamelog__entry--error    { color: red; font-weight: bold; }

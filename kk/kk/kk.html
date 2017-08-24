@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kk 프로젝트</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
+  <link rel="stylesheet" href="css/kk.css" type="text/css" />
+
+  <!-- 외부 라이브러리 -->
+  <script type="text/javascript" src="lib/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="lib/rot.js"></script>
+  
+  <!-- kk 프로젝트 소스 (데이터) -->
+  <script type="text/javascript" src="data/items.js"></script>
+  <script type="text/javascript" src="data/monsters.js"></script>
+  
+  <!-- kk 프로젝트 소스 (게임 로직) -->
+  <script type="text/javascript" src="Game/util.js"></script>
+  <script type="text/javascript" src="Game/Const.js"></script>
+  <script type="text/javascript" src="Game/Graphics.js"> </script>
+  <script type="text/javascript" src="Game/RogGraphics.js"></script>
+  <script type="text/javascript" src="Game/Camera.js"></script>
+  <script type="text/javascript" src="Game/Input.js"></script>
+  <script type="text/javascript" src="Game/RogInput.js"></script>
+  <script type="text/javascript" src="Game/Game.js"></script>
+  <script type="text/javascript" src="Game/Rog.js"></script>
+  <script type="text/javascript" src="Game/Layer.js"></script>
+  <script type="text/javascript" src="Game/Map.js"></script>
+  <script type="text/javascript" src="Game/Fog.js"></script>
+  <script type="text/javascript" src="Game/Entity.js"></script>
+  <script type="text/javascript" src="Game/Unit.js"></script>
+  <script type="text/javascript" src="Game/Player.js"></script>
+  <script type="text/javascript" src="Game/Inventory.js"></script>
+  <script type="text/javascript" src="Game/EquipmentSlots.js"></script>
+  <script type="text/javascript" src="Game/Item.js"></script>
+  <script type="text/javascript" src="Game/Monster.js"></script>
+  
+  <script type="text/javascript" src="ai/AIList.js"></script>
+  <script type="text/javascript" src="ai/AI.js"></script>
+  <script type="text/javascript" src="ai/WalkToTargetAI.js"></script>
+  <script type="text/javascript" src="ai/FindAttackTargetAI.js"></script>
+  <script type="text/javascript" src="ai/MeleeAttackAI.js"></script>
+  <script type="text/javascript" src="ai/WanderingAI.js"></script>
+  
+  <!-- kk 프로젝트 소스 (UI) -->
+  <script type="text/javascript" src="ui/gamelog.js"></script>
+  <script type="text/javascript" src="ui/charstats.js"></script>
+  <script type="text/javascript" src="ui/inventory-tooltip.js"></script>
+  <script type="text/javascript" src="ui/inventory.js"></script>
+  <script type="text/javascript" src="ui/preloader.js"></script>
+
+  <script type="text/javascript">
+
+/* global $, Graphics, Rog, Input, ui */
+
+
+function makeOptionString(item) {
+  return '<option value="' + item.code + '">' + item.name + '</option>';
+}
+
+var rog;
+
+//이 코드는 브라우저 로딩 후에 실행됨
+$(function () {
+  var $itemPickUpSelect = $('<select>').appendTo('#sidebar');
+  $('<optgroup label="무기">').appendTo($itemPickUpSelect)
+    .append(items.weapons.map(makeOptionString).join(''));
+
+  $('<optgroup label="식량">').appendTo($itemPickUpSelect)
+    .append(items.food.map(makeOptionString).join(''));
+
+  $('<optgroup label="기타">').appendTo($itemPickUpSelect)
+    .append(items.misc.map(makeOptionString).join(''));
+
+
+  var $itemPickUpButton = $('<button>아이템 추가</button>').appendTo('#sidebar').click(function () {
+    var itemCode = $itemPickUpSelect.val();
+    var item = new Item(rog.map_, items[itemCode]);
+    rog.player_.pickUp(item);
+  });
+  
+  var $inventoryFreezeButton = $('<button>')
+    .text('인벤토리 얼리기').appendTo('#sidebar')
+    .click(function () {
+      if (ui.inventory.isFrozen) {
+        ui.inventory.unfreezeInput();
+        $(this).text('인벤토리 얼리기');
+      }
+      else {
+        ui.inventory.freezeInput();
+        $(this).text('인벤토리 풀어주기');
+      }
+    });
+    
+  var graphics = new RogGraphics(GAME_WIDTH, GAME_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+  var input = new RogInput();
+  rog = new Rog(graphics, input);
+  
+  //이벤트 리스너는 한 번만 등록하면 된다.
+  $(document).on('keydown', input.keyDown.bind(input));
+  $(document).on('keyup', input.keyUp.bind(input));
+  
+  function Loop() {
+    graphics.clearDisplayBuffer();
+  	
+    rog.run();
+    requestAnimationFrame(Loop);
+  }
+  
+  Loop();
+});
+
+
+
+  </script>
+
+<body>
+  
+  <canvas id="gamecanvas" width="640" height="480"></canvas>
+  <div id="sidebar">
+    <div id="charstats"></div>
+    <div id="inventory"></div>
+  </div>
+  <div id="gamelog"></div>
+  <footer>
+    Item images were taken from The Noun Project(http://thenounproject.com):
+    <ul>
+      <li>apple.png: "Apple" icon by Valery</li>
+      <li>axe.png: "Ax" icon by Maxim Kulikov</li>
+      <li>battery0 ~ 10.png: "Battery" icon by Thomas Helbig</li>
+      <li>bigkrystal.png: "Diamond" icon by anbileru adaleru</li>
+      <li>bread.png: "Bread" icon by Iconic</li>
+      <li>candle.png: "Candle" icon by 8ties&reg;</li>
+      <li>cookie.png: "Cookie" icon by Nina Geometrieva</li>
+      <li>crown.png: "Crown" icon by Abhiraami Thangavel</li>
+      <li>flute.png: "Flute" icon by icon 54</li>
+      <li>gem.png: "Diamond" icon by hans draiman</li>
+      <li>hammer.png: "Gavel" icon by Daniela Baptista</li>
+      <li>knife.png: "Knife" icon by Creative Stall</li>
+      <li>krystal.png: "Diamond" icon by anbileru adaleru</li>
+      <li>lunchbag.png: "Lunch Bag" icon by Greg Beck</li>
+      <li>meat.png: "Ham" icon by Anna Nebbiati</li>
+      <li>milk.png: "Milk Carton" icon by Creative Stall</li>
+      <li>pickaxe.png: "Pickaxe" icon by Creative Stall</li>
+      <li>potion.png: "Beaker" icon by Dusan Popovic</li>
+      <li>sandwich.png: "Sandwich" icon by Cris Dobbins</li>
+      <li>scroll.png: "Scroll" icon by Oliviu Stoian</li>
+      <li>shovel.png: "Shovel" icon by Robert Bjurshagen</li>
+      <li>spear.png: "Spear" icon by Bonegolem</li>
+      <li>sword.png: "Sword" icon by Creative Stall</li>
+      <li>torch.png: "Torch" icon by Andrew Vine</li>
+      <li>trophy.png: "Trophy" icon by To Uyen</li>
+      <li>trumpet.png: "Trumpet" icon by icon 54</li>
+      <li>tuna_can.png: "Tuna Can" icon by Yazmin Alanis</li>
+      <li>violin.png: "Violin" icon by Hea Poh Lin</li>
+      <li>wand.png: "Magic Wand" icon by Nick Bluth</li>
+      <li>placeholder.png: "Question Mark" icon by Briley Mullen</li>
+    </ul>
+  </footer>
+</body>
+</html>

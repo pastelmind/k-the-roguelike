@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kk 프로젝트(UI)</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" />
+  <style type="text/css">
+
+
+#gamecanvas {
+  width: 640px; height: 480px;
+  border: 1px solid #000;
+  background-color: #eee;
+  float: left;
+}
+
+#sidebar {
+  float: left;
+  margin-left: 5px;
+}
+
+#inventory {
+  border: 1px solid #ddd;
+  width: 192px;
+  max-height: 256px;
+}
+
+.inventory-cell {
+  float: left;
+  width: 62px; height: 62px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bbb #000 #000 #bbb;
+  background-color: #ffd;
+}
+
+.inventory-cell__item-image {
+  position: relative;
+  width: 48px; height: 48px;
+  top: 7px; left: 7px;
+  cursor: pointer;
+}
+
+#gamelog {
+  width: 640px;
+  height: 200px;
+  float: left;
+  clear: left;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+  background-color: #ddd;
+  overflow: auto;
+  font-size: 9pt;
+}
+
+.gamelog__entry,
+.gamelog__entry--normal   {  color: black; }
+.gamelog__entry--info     { color: blue;   }
+.gamelog__entry--warning  { color: orange; }
+.gamelog__entry--critical { color: red;    }
+.gamelog__entry--error    { color: red; font-weight: bold; }
+
+footer {
+  float: left;
+  clear: both;
+  font-size: 7pt;
+  margin-top: 50px;
+}
+
+  </style>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="ui/util.js"></script>
+  <script type="text/javascript" src="Game/Item.js"></script>
+  <script type="text/javascript" src="Game/items.js"></script>
+  <script type="text/javascript" src="ui/gamelog.js"></script>
+  <script type="text/javascript" src="ui/inventory.js"></script>
+
+  <script type="text/javascript">
+
+/* global $, Item, items */
+
+$(function () {
+  var $itemPickUpSelect = $('<select>').appendTo('#sidebar');
+  $('<optgroup label="무기">').appendTo($itemPickUpSelect)
+    .append(items.weapons.map(makeOptionString).join(''));
+
+  $('<optgroup label="식량">').appendTo($itemPickUpSelect)
+    .append(items.food.map(makeOptionString).join(''));
+
+  $('<optgroup label="기타">').appendTo($itemPickUpSelect)
+    .append(items.misc.map(makeOptionString).join(''));
+
+
+  var $itemPickUpButton = $('<button>아이템 추가</button>').appendTo('#sidebar').click(function () {
+    var itemCode = $itemPickUpSelect.val();
+    var item = new Item(items[itemCode]);
+    inventory.addItem(item);
+  });
+});
+
+function makeOptionString(item) {
+  return '<option value="' + item.code + '">' + item.name + '</option>';
+}
+
+
+
+  </script>
+
+<body>
+  
+  <canvas id="gamecanvas"></canvas>
+  <div id="sidebar">
+    <div id="charstats"></div>
+    <div id="inventory"></div>
+  </div>
+  <div id="gamelog"></div>
+  <footer>
+    Item images were taken from The Noun Project(http://thenounproject.com):
+    <ul>
+      <li>apple.png: "Apple" icon by Valery</li>
+      <li>axe.png: "Ax" icon by Maxim Kulikov</li>
+      <li>bread.png: "Bread" icon by Iconic</li>
+      <li>candle.png: "Candle" icon by 8ties&reg;</li>
+      <li>cookie.png: "Cookie" icon by Nina Geometrieva</li>
+      <li>crown.png: "Crown" icon by Abhiraami Thangavel</li>
+      <li>flute.png: "Flute" icon by icon 54</li>
+      <li>gem.png: "Diamond" icon by hans draiman</li>
+      <li>hammer.png: "Gavel" icon by Daniela Baptista</li>
+      <li>knife.png: "Knife" icon by Creative Stall</li>
+      <li>lunchbag.png: "Lunch Bag" icon by Greg Beck</li>
+      <li>meat.png: "Ham" icon by Anna Nebbiati</li>
+      <li>milk.png: "Milk Carton" icon by Creative Stall</li>
+      <li>pickaxe.png: "Pickaxe" icon by Creative Stall</li>
+      <li>potion.png: "Beaker" icon by Dusan Popovic</li>
+      <li>sandwich.png: "Sandwich" icon by Cris Dobbins</li>
+      <li>scroll.png: "Scroll" icon by Oliviu Stoian</li>
+      <li>shovel.png: "Shovel" icon by Robert Bjurshagen</li>
+      <li>spear.png: "Spear" icon by Bonegolem</li>
+      <li>sword.png: "Sword" icon by Creative Stall</li>
+      <li>torch.png: "Torch" icon by Andrew Vine</li>
+      <li>trophy.png: "Trophy" icon by To Uyen</li>
+      <li>trumpet.png: "Trumpet" icon by icon 54</li>
+      <li>tuna_can.png: "Tuna Can" icon by Yazmin Alanis</li>
+      <li>violin.png: "Violin" icon by Hea Poh Lin</li>
+      <li>wand.png: "Magic Wand" icon by Nick Bluth</li>
+    </ul>
+  </footer>
+</body>
+</html>

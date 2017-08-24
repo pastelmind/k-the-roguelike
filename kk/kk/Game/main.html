@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang = "ko">
+	
+	<head>
+		<title>Rog</title>
+	</head>
+	
+	<body>
+		
+		<canvas id = "GameCanvas" style = 'position:absolute;top:0;left:0' width = "600" height = "400"></canvas>
+			
+		<script src = "Graphics.js"> </script>	
+		<script src = "Camera.js"></script>
+		<script src = "Input.js"></script>
+		<script src = "Game.js"></script>
+		<script src = "Rog.js"></script>
+		<script src = "Map.js"></script>
+		<script src = "Entity.js"></script>
+		<script src = "Player.js"></script>
+		
+		<script>
+			var graphics = new Graphics(600, 400);
+			var input = new Input();
+			var rog = new Rog(graphics, input);
+			
+			// 이벤트 리스너는 한 번만 등록하면 된다.
+			this.addEventListener('keydown', input.keyDown.bind(input), false);
+			this.addEventListener('keyup', input.keyUp.bind(input), false);
+			
+			var Loop = function()
+			{
+				graphics.clearDisplayBuffer();
+				
+				rog.run();
+				requestAnimationFrame(Loop);
+			}
+			
+			Loop();
+			
+			/*
+			Rog - 턴 개념 추가
+			Camera, Objects - 타일 단위 이동을 위한 타일의 크기를 외부에서 결정할 수 있게 하기
+			Map, Objects - 오브젝트가 맵과의 커플링(오브젝트가 자신의 위치 정보를 변경할 때 맵 클래스의 구조를 알아야함 - mapLayer_)
+						   데이터만 이동시키기 .
+			*/
+			
+			// 변경여부 : X
+		
+		</script>
+		
+	</body>
+	
+</html>
+	
+	
+	
