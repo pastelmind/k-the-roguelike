@@ -1,11 +1,15 @@
 /* global KkSimple */
 
-KkSimple.Unit = function Unit(ch, map, x, y) {
+KkSimple.Unit = function Unit(ch, map, x, y, speed) {
   this._ch = ch;
   this._x = x;
   this._y = y;
   this.addToMap(map, x, y);
+  
+  this._baseSpeed = speed || KkSimple.Unit.DEFAULT_SPEED;
 };
+
+KkSimple.Unit.DEFAULT_SPEED = 100;
 
 KkSimple.Unit.prototype.addToMap = function addToMap(map) {
   this.removeFromMap();
@@ -46,3 +50,7 @@ KkSimple.Unit.prototype.moveBy = function moveBy(dx, dy) {
 KkSimple.Unit.prototype.getX = function getX() { return this._x; };
 KkSimple.Unit.prototype.getY = function getY() { return this._y; };
 KkSimple.Unit.prototype.getChar = function getChar() { return this._ch; };
+
+KkSimple.Unit.prototype.getSpeed = function getSpeed() {
+  return this._baseSpeed;
+};

@@ -10,7 +10,7 @@ var KkSimple = {
     document.body.appendChild(this._display.getContainer());
     
     //Initialize the scheduler and engine
-    var scheduler = new ROT.Scheduler.Simple();
+    var scheduler = new ROT.Scheduler.Speed();
     this._engine = new ROT.Engine(scheduler);
     
     //Generate the map

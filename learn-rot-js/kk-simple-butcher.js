@@ -1,7 +1,8 @@
 /* global KkSimple, ROT */
 
 KkSimple.Butcher = function Butcher(map, x, y) {
-  KkSimple.Unit.call(this, 'B', map, x, y);
+  var speed = 50;
+  KkSimple.Unit.call(this, 'B', map, x, y, speed);
 };
 
 KkSimple.Butcher.prototype = Object.create(KkSimple.Unit.prototype);
