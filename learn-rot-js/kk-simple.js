@@ -41,16 +41,6 @@ var KkSimple = {
     
     //Draw the map
     this._map.draw();
-  },
-  
-  getObjectChar: function getObjectChar(objectType) {
-    switch (objectType) {
-      case 0:   return "";  //nothing
-      case 1:   return "@"; //player
-      case 2:   return "*"; //krystal
-      default:  return "!"; //unknown
-    }
-    
   }
 };
 

@@ -2,7 +2,6 @@
 
 KkSimple.Tile = function Tile(tileType) {
   this._type = (tileType === undefined ? KkSimple.Tile.TILE_WALL : tileType);
-  this._objects = [];
   this._units = [];
 };
 
@@ -19,10 +18,6 @@ KkSimple.Tile.prototype.getChar = function getChar() {
 
 KkSimple.Tile.prototype.isType = function isType(type) {
   return this._type == type;
-};
-
-KkSimple.Tile.prototype.hasObject = function hasObject(obj) {
-  return this._objects.indexOf(obj) != -1;
 };
 
 KkSimple.Tile.prototype.hasUnit = function hasUnit(unit) {

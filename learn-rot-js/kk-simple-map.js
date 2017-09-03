@@ -41,9 +41,6 @@ KkSimple.Map = function Map() {
   });
 };
 
-KkSimple.Map.OBJECT_NONE    = 0;
-KkSimple.Map.OBJECT_PLAYER  = 1;
-KkSimple.Map.OBJECT_KRYSTAL = 2;
 
 KkSimple.Map.prototype.forEachTile = function forEachTile(callback) {
   for (var y = 0; y < this._tiles.length; ++y) {
