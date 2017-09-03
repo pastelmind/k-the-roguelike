@@ -1,7 +1,11 @@
 /* global KkSimple, ROT */
 
 KkSimple.Map = function Map() {
-  var digger = new ROT.Map.Digger();
+  this._width  = ROT.DEFAULT_WIDTH;
+  this._height = ROT.DEFAULT_HEIGHT;
+  
+  //Generate the map
+  var digger = new ROT.Map.Digger(this._width, this._height);
   
   var tiles = [];
   this._tiles = tiles;
@@ -21,13 +25,14 @@ KkSimple.Map = function Map() {
   
   //Generate items
   var nKrystalsToSpawn = 10;
+  var map = this;
   this.forEachTile(function itemGenerateCallback(x, y, tile) {
-    if (tile._type == KkSimple.Tile.FLOOR)
+    if (tile.isType(KkSimple.Tile.FLOOR))
     {
       var chanceToSpawnItem = nKrystalsToSpawn / nTotalFloorTiles;
       if (ROT.RNG.getUniform() < chanceToSpawnItem) //Automatically handle NaN (if all floor tiles have been visited)
       {
-        tile._objects.push(KkSimple.Map.OBJECT_KRYSTAL);
+        tile.addUnit(new KkSimple.Item(KkSimple.items.krystal, map, x, y));
         --nKrystalsToSpawn;
       }
       
@@ -48,6 +53,10 @@ KkSimple.Map.prototype.forEachTile = function forEachTile(callback) {
   }
 };
 
+KkSimple.Map.prototype.getTileAt = function getTileAt(x, y) {
+  return this._tiles[y] ? this._tiles[y][x] : undefined;
+};
+
 KkSimple.Map.prototype.draw = function draw() {
   this.forEachTile(function drawCallback(x, y, tile) {
     var fg = "#afa", bg = "#000";
@@ -56,9 +65,12 @@ KkSimple.Map.prototype.draw = function draw() {
       fg = "#ccc"; bg = "#888";
     }
     
-    var ch = "";
-    if (tile.hasObject(KkSimple.Map.OBJECT_KRYSTAL)) {
-      ch = KkSimple.getObjectChar(KkSimple.Map.OBJECT_KRYSTAL);
+    var ch = "", unitToDraw = null;
+    if (tile.hasUnit(KkSimple._player)) {
+      ch = KkSimple._player.getChar();
+    }
+    else if (unitToDraw = tile.getFirstUnit()) {
+      ch = unitToDraw.getChar();
       fg = "#fff";
     }
     else
@@ -67,3 +79,34 @@ KkSimple.Map.prototype.draw = function draw() {
     KkSimple._display.draw(x, y, ch, fg, bg);
   });
 };
+
+KkSimple.Map.prototype.addUnit = function addUnitAt(unit) {
+  var tile = this.getTileAt(unit.getX(), unit.getY());
+  if (tile) {
+    tile.addUnit(unit);
+    return true;
+  }
+  return false;
+};
+
+KkSimple.Map.prototype.removeUnit = function removeUnitAt(unit) {
+  var tile = this.getTileAt(unit.getX(), unit.getY());
+  if (tile)
+    tile.removeUnit(unit);
+};
+
+KkSimple.Map.prototype.setUnitPos = function setUnitPos(unit, x, y) {
+  var newTile = this.getTileAt(x, y);
+  
+  if (newTile) {
+    var oldTile = this.getTileAt(unit.getX(), unit.getY());
+    if (oldTile)
+      oldTile.removeUnit(unit);
+    newTile.addUnit(unit);
+    return true;
+  }
+  return false;
+};
+
+KkSimple.Map.prototype.getWidth  = function getWidth()  { return this._width; };
+KkSimple.Map.prototype.getHeight = function getHeight() { return this._height; };
