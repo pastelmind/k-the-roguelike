@@ -71,7 +71,10 @@ KkSimple.Map.prototype.draw = function draw() {
     }
     else if (unitToDraw = tile.getFirstUnit()) {
       ch = unitToDraw.getChar();
-      fg = "#fff";
+      if (unitToDraw instanceof KkSimple.Butcher)
+        fg = '#f88';
+      else
+        fg = "#fff";
     }
     else
       ch = tile.getChar();
