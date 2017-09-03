@@ -33,6 +33,4 @@ KkSimple.Butcher.prototype.act = function act() {
     this.moveTo(pathX[1], pathY[1]);
     KkSimple._map.draw();
   }
-  
-  console.log("Butcher moves to %s, %s", this._x, this._y);
 };
